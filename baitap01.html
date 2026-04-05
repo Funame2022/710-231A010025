@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bài tập 01 - Danh sách sản phẩm</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="baitap01.html">Bài 01</a></li>
+          <li><a href="baitap02.html">Bài 02</a></li>
+          <li><a href="baitap03.html">Bài 03</a></li>
+          <li><a href="about.html">Lý thuyết</a></li>
+          <li><a href="baitap18.html">Bài 18</a></li>
+          <li><a href="baitap19.html">Bài 19</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+          <li><a href="diem_danh.html">Điểm danh</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>Danh sách sản phẩm</h1>
+      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." />
+
+      <div id="productsContainer" class="products-grid">
+        <!-- Products will be populated by JS -->
+      </div>
+      <div id="noResults" class="no-results" style="display: none">
+        Không tìm thấy sản phẩm nào!
+      </div>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script>
+      // Product data
+      const products = [
+        { id: 1, name: "iPhone 15 Pro", price: "25.000.000đ", img: "📱" },
+        { id: 2, name: "Samsung Galaxy S24", price: "22.000.000đ", img: "📱" },
+        { id: 3, name: "MacBook Air M2", price: "35.000.000đ", img: "💻" },
+        { id: 4, name: "Dell XPS 13", price: "40.000.000đ", img: "💻" },
+        { id: 5, name: "Sony WH-1000XM5", price: "12.000.000đ", img: "🎧" },
+        { id: 6, name: "AirPods Pro 2", price: "6.500.000đ", img: "🎧" },
+      ];
+
+      const searchInput = document.getElementById("searchInput");
+      const productsContainer = document.getElementById("productsContainer");
+      const noResults = document.getElementById("noResults");
+
+      // Debounced search
+      const debouncedSearch = utils.debounce(performSearch, 300);
+
+      function renderProducts(productList) {
+        productsContainer.innerHTML = productList
+          .map(function (product) {
+            return (
+              '<div class=\"product-card\">' +
+              '<div class=\"product-img\">' +
+              product.img +
+              "</div>" +
+              '<div class=\"product-name\">' +
+              utils.sanitizeInput(product.name) +
+              "</div>" +
+              '<div class=\"product-price\">' +
+              product.price +
+              "</div>" +
+              "</div>"
+            );
+          })
+          .join("");
+
+        noResults.style.display = productList.length === 0 ? "block" : "none";
+      }
+
+      function performSearch() {
+        const query = utils.sanitizeInput(searchInput.value.toLowerCase());
+        const filtered = products.filter(function (p) {
+          return p.name.toLowerCase().includes(query);
+        });
+        renderProducts(filtered);
+      }
+
+      // Event listeners
+      searchInput.addEventListener("input", debouncedSearch);
+
+      // Initial render
+      renderProducts(products);
+    </script>
+  </body>
+</html>

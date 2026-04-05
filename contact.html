@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liên hệ</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="baitap01.html">Bài 01</a></li>
+          <li><a href="baitap02.html">Bài 02</a></li>
+          <li><a href="baitap03.html">Bài 03</a></li>
+          <li><a href="about.html">Lý thuyết</a></li>
+          <li><a href="baitap18.html">Bài 18</a></li>
+          <li><a href="baitap19.html">Bài 19</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+          <li><a href="diem_danh.html">Điểm danh</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>Liên hệ</h1>
+      <div class="contact-card">
+        <div class="contact-item">
+          <strong style="color: #667eea; font-size: 1.2rem">MSSV:</strong>
+          <span style="color: #333; font-size: 1.1rem; font-weight: 500"
+            >231A010025</span
+          >
+        </div>
+        <div class="contact-item">
+          <strong style="color: #667eea; font-size: 1.2rem">Email:</strong>
+          <span style="color: #333; font-size: 1.1rem"
+            >phu231a010025@st.vhu.edu.vn</span
+          >
+        </div>
+        <div class="contact-item">
+          <strong style="color: #667eea; font-size: 1.2rem">GitHub:</strong>
+          <a
+            href="https://github.com/Funame2022"
+            target="_blank"
+            style="color: #667eea; font-size: 1.1rem; text-decoration: none"
+          >
+            github.com/Funame2022
+          </a>
+        </div>
+        <p style="color: #666; margin-top: 2rem; font-style: italic">
+          Liên hệ qua email hoặc GitHub để feedback.
+        </p>
+      </div>
+    </main>
+
+    <style>
+      .contact-card {
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        padding: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+        max-width: 500px;
+        margin: 2rem auto;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .contact-item:last-child {
+        margin-bottom: 0;
+      }
+
+      a:hover {
+        color: #5a67d8;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 480px) {
+        .contact-card {
+          margin: 1rem;
+          padding: 2rem 1.5rem;
+        }
+
+        .contact-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+          text-align: left;
+        }
+      }
+    </style>
+  </body>
+</html>

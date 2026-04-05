@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phần Lý thuyết</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="baitap01.html">Bài 01</a></li>
+          <li><a href="baitap02.html">Bài 02</a></li>
+          <li><a href="baitap03.html">Bài 03</a></li>
+          <li><a href="about.html">Lý thuyết</a></li>
+          <li><a href="baitap18.html">Bài 18</a></li>
+          <li><a href="baitap19.html">Bài 19</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+          <li><a href="diem_danh.html">Điểm danh</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>Phần Lý thuyết & Giải thích Logic</h1>
+
+      <div class="theory-section">
+        <h2>Bài 1: Tìm kiếm sản phẩm</h2>
+        <p>
+          <strong>Logic:</strong> Khi người dùng gõ từ khóa, không tìm ngay lập
+          tức mà chờ 300ms (tránh lag). Lọc sản phẩm bằng cách chuyển tên về chữ
+          thường rồi kiểm tra từ khóa có trong đó không. Input được làm sạch
+          (loại ký tự đặc biệt như < >) tránh lỗi hiển thị code HTML nguy hiểm.
+          Không tìm thấy → hiện thông báo.
+        </p>
+      </div>
+
+      <div class="theory-section">
+        <h2>Bài 2: Form validation & LocalStorage</h2>
+        <p>
+          <strong>Logic:</strong> Khi nhấn submit, chặn trang reload để xử lý
+          JS. Lấy dữ liệu form (làm sạch tên, kiểm tra email đúng định dạng, mật
+          khẩu đủ mạnh). Lưu vào LocalStorage dưới dạng danh sách JSON. Bảo mật:
+          Mật khẩu lưu dạng text (demo), thực tế mã hóa trước khi lưu. Trang
+          users.html đọc list để hiển thị/sửa/xóa (luôn persist).
+        </p>
+        <p>
+          <strong>CRUD users.html:</strong> <code>JSON.parse</code> load list →
+          map HTML cards (sanitize display, masked password). Edit: modal form
+          re-validate → replace index. Delete: <code>splice(index,1)</code> →
+          stringify/save. Persist across tabs/sessions.
+        </p>
+        <p>
+          <strong>Bảo mật LocalStorage:</strong> Demo plain password
+          (client-only), prod:
+          <code>crypto.subtle.digest('SHA-256', password)</code> hash trước
+          save. Sanitize tất cả display tránh XSS. No server sync → local only.
+        </p>
+      </div>
+
+      <div class="theory-section">
+        <h2>Bài 3: Countdown timer</h2>
+        <p>
+          <strong>Logic:</strong> setInterval chạy mỗi giây trừ thời gian còn
+          lại, hiển thị MM:SS. Dưới 1p đổi màu đỏ rung. Hết giờ tự dừng
+          (clearInterval) hiện popup. Khi đóng tab cũng dừng để tránh chạy ngầm
+          tốn RAM. Deploy hosting: Lấy thời gian server thay vì client (tránh
+          chỉnh giờ máy).
+        </p>
+      </div>
+    </main>
+  </body>
+</html>

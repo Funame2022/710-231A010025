@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users - LocalStorage CRUD | Bài 2</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="index.html">Về lại trang chủ</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>Quản lý Users</h1>
+      <div class="card">
+        <p><strong>Tổng users:</strong> <span id="userCount">0</span></p>
+        <a
+          href="baitap02.html"
+          class="cta-button"
+          style="display: inline-block; margin-bottom: 2rem"
+          >➕ Thêm User mới</a
+        >
+      </div>
+
+      <div id="usersList" class="products-grid"></div>
+      <div id="noUsers" class="no-results" style="display: none">
+        Chưa có user nào. <a href="baitap02.html">Đăng ký ngay!</a>
+      </div>
+
+      <div id="editModal" class="modal" style="display: none">
+        <div class="modal-content card">
+          <span class="close">&times;</span>
+          <h2>Chỉnh sửa User</h2>
+          <form id="editForm">
+            <input type="hidden" id="editIndex" />
+            <div class="form-group">
+              <label for="editName">Họ tên:</label>
+              <input type="text" id="editName" required />
+            </div>
+            <div class="form-group">
+              <label for="editEmail">Email:</label>
+              <input type="email" id="editEmail" required />
+            </div>
+            <div class="form-group">
+              <label for="editPassword">Password:</label>
+              <input type="password" id="editPassword" required />
+            </div>
+            <button type="submit">Cập nhật</button>
+            <button type="button" id="cancelEdit" class="button-secondary">
+              Hủy
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script>
+      const usersList = document.getElementById("usersList");
+      const userCount = document.getElementById("userCount");
+      const noUsers = document.getElementById("noUsers");
+      const editModal = document.getElementById("editModal");
+      const editForm = document.getElementById("editForm");
+      const closeBtn = document.querySelector("#editModal .close");
+      const cancelBtn = document.getElementById("cancelEdit");
+
+      function loadUsers() {
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+        userCount.textContent = users.length;
+
+        if (users.length === 0) {
+          noUsers.style.display = "block";
+          usersList.innerHTML = "";
+          return;
+        }
+
+        noUsers.style.display = "none";
+        usersList.innerHTML = users
+          .map(
+            (user, index) => `
+          <div class="product-card">
+            <div class="product-img">👤</div>
+            <div class="product-name">${utils.sanitizeInput(user.fullName)}</div>
+            <div class="product-price">${user.email}</div>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">Password: ${"***".repeat(user.password.length / 2)}${user.password.length % 2 ? "*" : ""}</p>
+            <div style="margin-top: 1rem;">
+              <button onclick="editUser(${index})" class="button-small">✏️ Edit</button>
+              <button onclick="deleteUser(${index})" class="button-danger">🗑️ Delete</button>
+            </div>
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      function editUser(index) {
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+        const user = users[index];
+        document.getElementById("editIndex").value = index;
+        document.getElementById("editName").value = user.fullName;
+        document.getElementById("editEmail").value = user.email;
+        document.getElementById("editPassword").value = user.password;
+        editModal.style.display = "flex";
+      }
+
+      function deleteUser(index) {
+        if (confirm("Xóa user này?")) {
+          const users = JSON.parse(localStorage.getItem("users") || "[]");
+          users.splice(index, 1);
+          localStorage.setItem("users", JSON.stringify(users));
+          loadUsers();
+        }
+      }
+
+      editForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const index = parseInt(document.getElementById("editIndex").value);
+        const updatedUser = {
+          fullName: utils.sanitizeInput(
+            document.getElementById("editName").value,
+          ),
+          email: document.getElementById("editEmail").value.trim(),
+          password: document.getElementById("editPassword").value,
+          terms: true,
+        };
+
+        if (
+          !utils.isValidEmail(updatedUser.email) ||
+          !utils.isStrongPassword(updatedUser.password)
+        ) {
+          alert("Email hoặc password không hợp lệ!");
+          return;
+        }
+
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+        users[index] = updatedUser;
+        localStorage.setItem("users", JSON.stringify(users));
+        editModal.style.display = "none";
+        loadUsers();
+      });
+
+      closeBtn.onclick = () => (editModal.style.display = "none");
+      cancelBtn.onclick = () => (editModal.style.display = "none");
+      window.onclick = (e) => {
+        if (e.target === editModal) editModal.style.display = "none";
+      };
+
+      loadUsers();
+    </script>
+
+    <style>
+      .button-small {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+      }
+      .button-danger {
+        background: #ef4444;
+        color: white;
+      }
+      .button-secondary {
+        background: var(--text-secondary);
+        color: white;
+      }
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .close {
+        float: right;
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--text-secondary);
+      }
+      #usersList .product-card {
+        text-align: left;
+      }
+    </style>
+  </body>
+</html>
